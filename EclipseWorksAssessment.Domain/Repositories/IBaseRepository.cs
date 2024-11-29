@@ -1,6 +1,6 @@
 ﻿using EclipseWorksAssessment.Domain.Entities;
 
-namespace EclipseWorksAssessment.Domain.Interfaces
+namespace EclipseWorksAssessment.Domain.Repositories
 {
     public interface IBaseRepository<T> where T : BaseEntity
     {
