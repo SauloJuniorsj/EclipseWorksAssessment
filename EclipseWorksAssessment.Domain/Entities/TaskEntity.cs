@@ -2,9 +2,9 @@
 
 namespace EclipseWorksAssessment.Domain.Entities
 {
-    public sealed class TaskEntity : BaseEntity
+    public class TaskEntity : BaseEntity
     {
-        public TaskEntity(string title, string description, DateTimeOffset dueDate, ETaskStatus status, ETaskPriority priority, Guid projectId)
+        public TaskEntity(string title, string description, DateTimeOffset dueDate, ETaskStatus status, ETaskPriority priority, int projectId)
         {
             Title = title;
             Description = description;
@@ -14,6 +14,7 @@ namespace EclipseWorksAssessment.Domain.Entities
             ProjectId = projectId;
 
             DateCreated = DateTime.UtcNow;
+            UserComments = new List<UserCommentEntity>();
         }
 
         public string Title { get; set; }
@@ -21,9 +22,10 @@ namespace EclipseWorksAssessment.Domain.Entities
         public DateTimeOffset DueDate { get; set; }
         public ETaskStatus Status { get; set; }
         public ETaskPriority Priority { get; set; }
-        public Guid ProjectId { get; set; }
+        public int ProjectId { get; set; }
 
-        public ProjectEntity Project { get; set; }
+        public virtual List<UserCommentEntity> UserComments { get; set; }
+        public virtual ProjectEntity Project { get; set; }
 
         public void UpdateTask(string title, string description, DateTimeOffset dueDate, ETaskStatus status)
         {

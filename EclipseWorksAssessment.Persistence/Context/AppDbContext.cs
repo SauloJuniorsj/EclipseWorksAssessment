@@ -1,5 +1,6 @@
 ﻿using EclipseWorksAssessment.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace EclipseWorksAssessment.Persistence.Context
 {
@@ -15,9 +16,5 @@ namespace EclipseWorksAssessment.Persistence.Context
         public DbSet<UserEntity> Users{ get; set; }
         public DbSet<UserCommentEntity> UserComments{ get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
-        }
     }
 }

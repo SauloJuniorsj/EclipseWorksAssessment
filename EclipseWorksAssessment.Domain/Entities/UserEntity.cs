@@ -1,9 +1,15 @@
 ﻿namespace EclipseWorksAssessment.Domain.Entities
 {
-    public sealed class UserEntity : BaseEntity
+    public class UserEntity : BaseEntity
     {
+        public UserEntity(string name)
+        {
+            Name = name;
+            UserProjects = new List<ProjectEntity>();
+        }
+
         public string Name { get; set; }
 
-        public List<ProjectEntity> UserProjects { get; set; }
+        public virtual List<ProjectEntity> UserProjects { get; set; }
     }
 }

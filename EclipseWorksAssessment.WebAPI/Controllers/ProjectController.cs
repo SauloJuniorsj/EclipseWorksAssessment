@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EclipseWorksAssessment.WebAPI.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class ProjectController : ControllerBase
     {
         private readonly IProjectService _projectService;
@@ -26,7 +28,7 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
         /// <param name="id">The unique identifier of the project to retrieve.</param>
         /// <returns>An IActionResult containing the retrieved project, or a 404 result if the project is not found.</returns>
         [HttpGet("{id}")]
-        public IActionResult GetById(Guid id)
+        public IActionResult GetById(int id)
         {
             var project = _projectService.GetById(id);
             if (project == null)
@@ -41,6 +43,7 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
         /// </summary>
         /// <param name="createProject">The input model containing the project details.</param>
         /// <returns>An IActionResult indicating the result of the creation operation.</returns>
+        [HttpPost]
         public IActionResult Post([FromBody] CreateProjectInputModel createProject)
         {
             var Id = _projectService.Create(createProject);

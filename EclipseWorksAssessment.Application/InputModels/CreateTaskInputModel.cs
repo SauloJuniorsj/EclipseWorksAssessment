@@ -9,6 +9,6 @@ namespace EclipseWorksAssessment.Application.InputModels
         public DateTimeOffset DueDate { get; set; }
         public ETaskStatus Status { get; set; }
         public ETaskPriority Priority { get; set; }
-        public Guid ProjectId { get; set; }
+        public int ProjectId { get; set; }
     }
 }

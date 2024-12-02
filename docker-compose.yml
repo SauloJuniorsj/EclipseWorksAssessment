@@ -1,0 +1,30 @@
+networks:
+  eclipseworksApp:
+
+services:
+  eclipseworksassessment.webapi:
+    image: ${DOCKER_REGISTRY-}eclipseworksassessmentwebapi
+    build:
+      context: .
+      dockerfile: EclipseWorksAssessment.WebAPI/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      - eclipseworks.database
+    environment:
+    - DB_HOST=eclipseworks.database
+    - DB_NAME=EclipseWorks
+    - DB_SA_PASSWORD=Numsey#2024
+    networks:
+     - eclipseworksApp
+  eclipseworks.database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: eclipseworks.database
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Numsey#2024
+    networks:
+     - eclipseworksApp
+    ports:
+      - "1433:1433"

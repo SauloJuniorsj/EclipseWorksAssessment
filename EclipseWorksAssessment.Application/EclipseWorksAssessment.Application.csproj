@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EclipseWorksAssessment.Domain\EclipseWorksAssessment.Domain.csproj" />
-    <ProjectReference Include ="..\EclipseWorksAssessment.Persistence\EclipseWorksAssessment.Persistence.csproj" />
+    <ProjectReference Include="..\EclipseWorksAssessment.Persistence\EclipseWorksAssessment.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 
 namespace EclipseWorksAssessment.Domain.Repositories
 {
-    public interface IProjectRepository
+    public interface IUserRepository : IBaseRepository<UserEntity>
     {
     }
 }

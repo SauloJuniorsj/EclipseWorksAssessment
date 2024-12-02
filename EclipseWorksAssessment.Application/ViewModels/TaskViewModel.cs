@@ -5,7 +5,7 @@ namespace EclipseWorksAssessment.Application.ViewModels
 {
     public class TaskViewModel
     {
-        public TaskViewModel(Guid id, string title, string description, DateTimeOffset dueDate, ETaskStatus status, ETaskPriority priority, Guid projectId)
+        public TaskViewModel(int id, string title, string description, DateTimeOffset dueDate, ETaskStatus status, ETaskPriority priority, int projectId)
         {
             Id = id;
             Title = title;
@@ -16,12 +16,13 @@ namespace EclipseWorksAssessment.Application.ViewModels
             ProjectId = projectId;
         }
 
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTimeOffset DueDate { get; set; }
         public ETaskStatus Status { get; set; }
         public ETaskPriority Priority { get; set; }
-        public Guid ProjectId { get; set; }
+        public int ProjectId { get; set; }
+
     }
 }

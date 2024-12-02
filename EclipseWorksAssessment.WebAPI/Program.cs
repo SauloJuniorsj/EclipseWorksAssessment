@@ -1,7 +1,13 @@
+using EclipseWorksAssessment.Persistence;
+using EclipseWorksAssessment.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+//builder.Services.ConfigurePersistence(builder.Configuration);
 
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("EclipseWorksCs")));
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -15,6 +21,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+ServiceExtensions.MigrationInitializer(app);
 
 app.UseHttpsRedirection();
 

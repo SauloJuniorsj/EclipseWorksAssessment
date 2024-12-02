@@ -15,7 +15,7 @@ namespace EclipseWorksAssessment.Application.Services.Implementations
             _dbContext = dbContext;
         }
 
-        public Guid Create(CreateTaskInputModel createModel)
+        public int Create(CreateTaskInputModel createModel)
         {
             TaskEntity task = new TaskEntity(
                 createModel.Title,
@@ -31,7 +31,7 @@ namespace EclipseWorksAssessment.Application.Services.Implementations
             return task.Id;
         }
 
-        public Guid CreateComment(CreateCommentInputModel createModel)
+        public int CreateComment(CreateCommentInputModel createModel)
         {
             UserCommentEntity comment = new UserCommentEntity(
                 createModel.HistoryType,
@@ -47,7 +47,7 @@ namespace EclipseWorksAssessment.Application.Services.Implementations
             return comment.Id;
         }
 
-        public void Delete(Guid taskId)
+        public void Delete(int taskId)
         {
             var task = _dbContext.Tasks.Find(taskId);
             if (task != null)
@@ -76,7 +76,7 @@ namespace EclipseWorksAssessment.Application.Services.Implementations
 
         }
 
-        public TaskViewModel GetTaskById(Guid taskId)
+        public TaskViewModel GetTaskById(int taskId)
         {
             var task = _dbContext.Tasks.SingleOrDefault(x => x.Id == taskId);
 

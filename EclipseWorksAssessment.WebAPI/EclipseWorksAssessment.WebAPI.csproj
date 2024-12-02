@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -6,15 +6,21 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>4358358f-7aa7-4d55-8954-03e2439815a2</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EclipseWorksAssessment.Application\EclipseWorksAssessment.Application.csproj" />
+    <ProjectReference Include="..\EclipseWorksAssessment.Domain\EclipseWorksAssessment.Domain.csproj" />
     <ProjectReference Include="..\EclipseWorksAssessment.Persistence\EclipseWorksAssessment.Persistence.csproj" />
   </ItemGroup>
 

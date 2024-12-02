@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EclipseWorksAssessment.WebAPI.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class TaskController : ControllerBase
     {
         /// <summary>
@@ -24,42 +26,6 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
         public ActionResult Update(int id, [FromBody] UpdateTaskInputModel task)
         {
             return Ok();
-        }
-
-        // POST: ProjectController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return Ok();
-            }
-        }
-
-        // GET: ProjectController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return Ok();
-        }
-
-        // POST: ProjectController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return Ok();
-            }
         }
     }
 }
