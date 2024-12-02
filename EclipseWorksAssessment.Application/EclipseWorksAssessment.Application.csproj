@@ -11,4 +11,8 @@
     <ProjectReference Include="..\EclipseWorksAssessment.Persistence\EclipseWorksAssessment.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mapper\" />
+  </ItemGroup>
+
 </Project>

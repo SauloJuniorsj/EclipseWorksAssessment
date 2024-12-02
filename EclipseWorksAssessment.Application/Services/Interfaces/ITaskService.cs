@@ -5,11 +5,11 @@ namespace EclipseWorksAssessment.Application.Services.Interfaces
 {
     public interface ITaskService
     {
-        List<TaskViewModel> GetAllTasks(string query);
-        TaskViewModel GetTaskById(int taskId);
-        int Create(CreateTaskInputModel createModel);
-        int CreateComment(CreateCommentInputModel createModel);
-        void Update(UpdateTaskInputModel updateModel);
-        void Delete(int taskId);
+        Task<CollectionTasksViewModel> GetAllTasks(string query);
+        Task<TaskViewModel> GetTaskById(int taskId);
+        Task<int> CreateTask(CreateTaskInputModel createModel);
+        Task<int> CreateComment(CreateCommentInputModel createModel);
+        Task<int> Update(UpdateTaskInputModel updateModel);
+        Task<int> Delete(int taskId);
     }
 }

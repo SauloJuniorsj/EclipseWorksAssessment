@@ -1,12 +1,14 @@
 ﻿using EclipseWorksAssessment.Application.InputModels;
 using EclipseWorksAssessment.Application.ViewModels;
+using EclipseWorksAssessment.Domain.Entities;
 
 namespace EclipseWorksAssessment.Application.Services.Interfaces
 {
     public interface IProjectService
     {
-        List<ProjectViewModel> GetAll();
-        ProjectViewModel GetById(int id);
-        int Create(CreateProjectInputModel model);
+        Task<CollectionProjectViewModel> GetAll();
+        Task<int> Delete(int projectId);
+        Task<int> Create(CreateProjectInputModel model);
+        Task<ProjectViewModel> GetById(int id);
     }
 }

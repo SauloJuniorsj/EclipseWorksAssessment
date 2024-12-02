@@ -2,9 +2,10 @@
 {
     public class ProjectEntity : BaseEntity
     {
-        public ProjectEntity(string name)
+        public ProjectEntity(string name, int userId)
         {
             Name = name;
+            UserId = userId;
             Tasks = new List<TaskEntity>();
         }
 

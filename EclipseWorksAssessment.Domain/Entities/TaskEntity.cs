@@ -16,6 +16,17 @@ namespace EclipseWorksAssessment.Domain.Entities
             DateCreated = DateTime.UtcNow;
             UserComments = new List<UserCommentEntity>();
         }
+        public TaskEntity(string title, string description, DateTimeOffset dueDate, ETaskStatus status, int projectId)
+        {
+            Title = title;
+            Description = description;
+            DueDate = dueDate;
+            Status = status;
+            ProjectId = projectId;
+
+            DateUpdated = DateTime.UtcNow;
+            UserComments = new List<UserCommentEntity>();
+        }
 
         public string Title { get; set; }
         public string Description { get; set; }

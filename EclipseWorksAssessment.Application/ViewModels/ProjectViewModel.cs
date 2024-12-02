@@ -8,7 +8,6 @@ namespace EclipseWorksAssessment.Application.ViewModels
         {
             Id = id;
             Name = name;
-       
         }
 
         public int Id { get; set; }
