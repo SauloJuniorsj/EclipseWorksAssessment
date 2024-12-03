@@ -12,6 +12,21 @@ namespace EclipseWorksAssessment.Persistence.Repositories
         {
             _db = context;
         }
+
+        public async Task<List<UserEntity>> GetAll()
+        {
+            try
+            {
+                return await _db.Users
+                  .Include(x => x.UserProjects)
+                  .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
         public async Task<UserEntity> GetById(int userId)
         {
             try
