@@ -19,14 +19,11 @@ namespace EclipseWorksAssessment.Persistence.Repositories
         {
             try
             {
-                using (_db)
-                {
-                    _db.UserComments.Add(createModel);
+                _db.UserComments.Add(createModel);
 
-                    await _db.SaveChangesAsync();
+                await _db.SaveChangesAsync();
 
-                    return createModel.Id;
-                }
+                return createModel.Id;
             }
             catch (Exception ex)
             {
@@ -49,14 +46,11 @@ namespace EclipseWorksAssessment.Persistence.Repositories
 
             try
             {
-                using (_db)
-                {
-                    _db.Tasks.Add(createModel);
+                _db.Tasks.Add(createModel);
 
-                    await _db.SaveChangesAsync();
+                await _db.SaveChangesAsync();
 
-                    return createModel.Id;
-                }
+                return createModel.Id;
             }
             catch (Exception ex)
             {
@@ -68,18 +62,15 @@ namespace EclipseWorksAssessment.Persistence.Repositories
         {
             try
             {
-                using (_db)
+                var task = _db.Tasks.FirstOrDefault(x => x.Id == taskId);
+                if (task == null)
                 {
-                    var task = _db.Tasks.FirstOrDefault(x => x.Id == taskId);
-                    if (task == null)
-                    {
-                        throw new KeyNotFoundException($"Task com o ID {taskId} não encontrado.");
-                    }
-
-                    _db.Tasks.Remove(task);
-
-                    return await _db.SaveChangesAsync();
+                    throw new KeyNotFoundException($"Task com o ID {taskId} não encontrado.");
                 }
+
+                _db.Tasks.Remove(task);
+
+                return await _db.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -89,22 +80,31 @@ namespace EclipseWorksAssessment.Persistence.Repositories
 
         public async Task<IEnumerable<TaskEntity>> GetAllTasks(string query, int projectId)
         {
-            using (_db)
-            {
-                return await _db.Tasks
-                        .Include(x => x.UserComments)
-                        .Where(x => x.ProjectId == projectId)
-                        .ToListAsync();
-            }
+            return await _db.Tasks
+                    .Include(x => x.UserComments)
+                    .Where(x => x.ProjectId == projectId)
+                    .ToListAsync();
         }
 
         public async Task<TaskEntity> GetTaskById(int taskId)
         {
-            using (_db)
+            try
             {
-                return await _db.Tasks
-                    .Include(x => x.UserComments)
-                    .FirstOrDefaultAsync(x => x.Id == taskId);
+                var task = await _db.Tasks
+                .Include(x => x.UserComments)
+                .FirstOrDefaultAsync(x => x.Id == taskId);
+
+                if (task is null)
+                {
+                    throw new KeyNotFoundException($"Tarefa com Id {taskId} não encontrado.");
+                }
+
+                return task;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -119,12 +119,9 @@ namespace EclipseWorksAssessment.Persistence.Repositories
 
             try
             {
-                using (_db)
-                {
-                    _db.Tasks.Update(entity);
+                _db.Tasks.Update(entity);
 
-                    return await _db.SaveChangesAsync();
-                }
+                return await _db.SaveChangesAsync();
             }
             catch (Exception ex)
             {

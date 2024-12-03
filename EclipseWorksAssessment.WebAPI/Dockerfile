@@ -17,6 +17,9 @@ COPY ["EclipseWorksAssessment.Application/EclipseWorksAssessment.Application.csp
 COPY ["EclipseWorksAssessment.Domain/EclipseWorksAssessment.Domain.csproj", "EclipseWorksAssessment.Domain/"]
 COPY ["EclipseWorksAssessment.Persistence/EclipseWorksAssessment.Persistence.csproj", "EclipseWorksAssessment.Persistence/"]
 RUN dotnet restore "./EclipseWorksAssessment.WebAPI/EclipseWorksAssessment.WebAPI.csproj"
+RUN dotnet restore "./EclipseWorksAssessment.Application/EclipseWorksAssessment.Application.csproj"
+RUN dotnet restore "./EclipseWorksAssessment.Domain/EclipseWorksAssessment.Domain.csproj"
+RUN dotnet restore "./EclipseWorksAssessment.Persistence/EclipseWorksAssessment.Persistence.csproj"
 COPY . .
 WORKDIR "/src/EclipseWorksAssessment.WebAPI"
 RUN dotnet build "./EclipseWorksAssessment.WebAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build

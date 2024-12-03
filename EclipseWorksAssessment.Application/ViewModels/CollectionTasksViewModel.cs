@@ -4,6 +4,10 @@ namespace EclipseWorksAssessment.Application.ViewModels
 {
     public class CollectionTasksViewModel
     {
+        public CollectionTasksViewModel()
+        {
+            
+        }
         public IEnumerable<TaskViewModel> CollectionProject { get; set; }
 
         public CollectionTasksViewModel(IEnumerable<TaskEntity> collection)

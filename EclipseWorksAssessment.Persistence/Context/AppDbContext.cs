@@ -16,5 +16,10 @@ namespace EclipseWorksAssessment.Persistence.Context
         public DbSet<UserEntity> Users{ get; set; }
         public DbSet<UserCommentEntity> UserComments{ get; set; }
 
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+        //    modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        //}
     }
 }

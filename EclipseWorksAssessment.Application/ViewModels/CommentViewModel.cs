@@ -4,6 +4,10 @@ namespace EclipseWorksAssessment.Application.ViewModels
 {
     public class CommentViewModel
     {
+        public CommentViewModel()
+        {
+            
+        }
         public CommentViewModel(EHistoryType historyType, string changes, string comment, string modifiedBy, TaskViewModel task)
         {
             HistoryType = historyType;

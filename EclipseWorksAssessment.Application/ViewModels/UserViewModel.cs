@@ -2,6 +2,10 @@
 {
     public class UserViewModel
     {
+        public UserViewModel()
+        {
+            
+        }
         public UserViewModel(int id, string name, List<ProjectViewModel> projects)
         {
             Id = id;

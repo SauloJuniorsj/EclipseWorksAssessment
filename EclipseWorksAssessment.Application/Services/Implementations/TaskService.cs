@@ -38,10 +38,8 @@ namespace EclipseWorksAssessment.Application.Services.Implementations
             UserCommentEntity comment = new UserCommentEntity(
                 createModel.HistoryType,
                 createModel.TaskId,
-                createModel.Changes,
-                createModel.Comment,
-                createModel.ModifiedBy,
-                createModel.UserId
+                createModel.UserId,
+                createModel.Comment
                 );
 
             await _taskRepository.CreateComment(comment);
@@ -54,9 +52,9 @@ namespace EclipseWorksAssessment.Application.Services.Implementations
             return await _taskRepository.Delete(taskId);
         }
 
-        public async Task<CollectionTasksViewModel> GetAllTasks(string query)
+        public async Task<CollectionTasksViewModel> GetAllTasks(string query, int projectId)
         {
-            var tasks = await _taskRepository.GetAllTasks(query);
+            var tasks = await _taskRepository.GetAllTasks(query, projectId);
             var taskViewModels = new CollectionTasksViewModel(tasks);
             return taskViewModels;
         }
@@ -72,16 +70,31 @@ namespace EclipseWorksAssessment.Application.Services.Implementations
 
         public async Task<int> Update(UpdateTaskInputModel updateModel)
         {
-            TaskEntity task = new TaskEntity(
+            TaskEntity newTask = new TaskEntity(
+                updateModel.Id,
                 updateModel.Title,
                 updateModel.Description,
                 updateModel.DueDate,
                 updateModel.Status,
                 updateModel.ProjectId
                 );
-            await _userComment.Create();
 
-            return await _taskRepository.Update(task);
+            var oldModel = GetTaskById(updateModel.Id);
+
+            UserCommentEntity userCommentEntity = new UserCommentEntity(
+                Domain.Enums.EHistoryType.Update,
+                newTask.Id,
+                updateModel.UserId,
+                string.Empty,
+                string.Empty,
+                //JsonConvert.SerializeObject(oldModel),
+                //JsonConvert.SerializeObject(newTask),
+                DateTime.UtcNow
+                );
+
+            await _userComment.SaveTaskHistoryAsync(userCommentEntity);
+
+            return await _taskRepository.Update(newTask);
         }
     }
 }

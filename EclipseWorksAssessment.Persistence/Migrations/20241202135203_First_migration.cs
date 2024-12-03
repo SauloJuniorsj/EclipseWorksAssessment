@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EclipseWorksAssessment.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class First_Migration : Migration
+    public partial class First_migration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -86,9 +86,11 @@ namespace EclipseWorksAssessment.Persistence.Migrations
                     HistoryType = table.Column<int>(type: "int", nullable: false),
                     TaskId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    Changes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OldState = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NewState = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserEntityId = table.Column<int>(type: "int", nullable: true),
                     DateCreated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     DateUpdated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     DateDeleted = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
@@ -102,6 +104,11 @@ namespace EclipseWorksAssessment.Persistence.Migrations
                         principalTable: "Tasks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserComments_Users_UserEntityId",
+                        column: x => x.UserEntityId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -118,6 +125,11 @@ namespace EclipseWorksAssessment.Persistence.Migrations
                 name: "IX_UserComments_TaskId",
                 table: "UserComments",
                 column: "TaskId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserComments_UserEntityId",
+                table: "UserComments",
+                column: "UserEntityId");
         }
 
         /// <inheritdoc />

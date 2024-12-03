@@ -1,6 +1,6 @@
 @EclipseWorksAssessment.WebAPI_HostAddress = http://localhost:5273
 
 GET {{EclipseWorksAssessment.WebAPI_HostAddress}}/weatherforecast/
-Accept: application/json
+# Accept: application/json
 
 ###

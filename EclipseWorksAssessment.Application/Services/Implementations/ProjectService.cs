@@ -32,9 +32,9 @@ namespace EclipseWorksAssessment.Application.Services.Implementations
             return await _projectRepository.Delete(projectId);
         }
 
-        public async Task<CollectionProjectViewModel> GetAll()
+        public async Task<CollectionProjectViewModel> GetAll(int userId)
         {
-            var proj = await _projectRepository.GetAll();
+            var proj = await _projectRepository.GetAll(userId);
             var projViewModels = new CollectionProjectViewModel(proj);
             return projViewModels;
         }
@@ -44,7 +44,7 @@ namespace EclipseWorksAssessment.Application.Services.Implementations
             var project = await _projectRepository.GetById(id);
             if (project == null) return null;
 
-            return new ProjectViewModel(project.Id, project.Name);
+            return new ProjectViewModel(project);
         }
     }
 }

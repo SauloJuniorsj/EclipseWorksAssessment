@@ -15,10 +15,11 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
             _projectService = projectService;
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
+        [HttpGet("GetAll/{userId}")]
+
+        public async Task<ActionResult> GetAll(int userId)
         {
-            var projects = _projectService.GetAll();
+            var projects = await _projectService.GetAll(userId);
             return Ok(projects);
         }
 
@@ -28,9 +29,9 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
         /// <param name="id">The unique identifier of the project to retrieve.</param>
         /// <returns>An IActionResult containing the retrieved project, or a 404 result if the project is not found.</returns>
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<ActionResult> GetById(int id)
         {
-            var project = _projectService.GetById(id);
+            var project = await _projectService.GetById(id);
             if (project == null)
             {
                 return NotFound();
@@ -44,9 +45,9 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
         /// <param name="createProject">The input model containing the project details.</param>
         /// <returns>An IActionResult indicating the result of the creation operation.</returns>
         [HttpPost]
-        public IActionResult Post([FromBody] CreateProjectInputModel createProject)
+        public async Task<IActionResult> Post([FromBody] CreateProjectInputModel createProject)
         {
-            var Id = _projectService.Create(createProject);
+            var Id = await _projectService.Create(createProject);
 
             return CreatedAtAction(nameof(GetById), new { id = Id }, createProject);
         }

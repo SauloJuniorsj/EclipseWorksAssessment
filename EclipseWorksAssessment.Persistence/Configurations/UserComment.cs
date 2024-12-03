@@ -15,6 +15,7 @@ namespace EclipseWorksAssessment.Persistence.Configurations
                 .HasOne(x => x.Task)
                 .WithMany(x => x.UserComments)
                 .HasForeignKey(x => x.TaskId);
+
         }
     }
 }

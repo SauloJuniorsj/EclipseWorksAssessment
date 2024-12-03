@@ -11,5 +11,6 @@
         public string Name { get; set; }
 
         public virtual List<ProjectEntity> UserProjects { get; set; }
+        public virtual List<UserCommentEntity> UserComments { get; set; }
     }
 }

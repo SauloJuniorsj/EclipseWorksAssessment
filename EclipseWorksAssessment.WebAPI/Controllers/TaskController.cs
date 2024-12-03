@@ -21,26 +21,30 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
         /// <param name="taskId"></param>
         /// <returns></returns>
         [HttpGet("{taskId}")]
-        public ActionResult Get(int taskId)
+        public async Task<ActionResult> Get(int taskId)
         {
-            var task = _taskService.GetTaskById(taskId);
+            var task = await _taskService.GetTaskById(taskId);
             if (task == null)
             {
                 return NotFound();
             }
             return Ok(task);
         }
+
         [HttpPost]
-        public ActionResult Post([FromBody] CreateTaskInputModel task)
+        public async Task<ActionResult> Post([FromBody] CreateTaskInputModel task)
         {
-            var Id = _taskService.Create(task);
+            var Id = await _taskService.CreateTask(task);
 
             return CreatedAtAction(nameof(Get), new { id = Id }, task);
         }
+
         [HttpPut("{id}")]
-        public ActionResult Update(int id, [FromBody] UpdateTaskInputModel task)
+        public async Task<ActionResult> Update(int id, [FromBody] UpdateTaskInputModel task)
         {
-            return Ok();
+            var result = await _taskService.Update(task);
+
+            return Ok(result);
         }
     }
 }

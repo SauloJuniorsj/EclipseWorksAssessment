@@ -10,10 +10,6 @@ namespace EclipseWorksAssessment.Persistence.Repositories
     {
         protected readonly AppDbContext _db;
 
-        public ProjectRepository()
-        {
-        }
-
         public ProjectRepository(AppDbContext context)
         {
             _db = context;
@@ -23,14 +19,11 @@ namespace EclipseWorksAssessment.Persistence.Repositories
         {
             try
             {
-                using (_db)
-                {
-                    _db.Projects.Add(model);
+                _db.Projects.Add(model);
 
-                    await _db.SaveChangesAsync();
+                await _db.SaveChangesAsync();
 
-                    return model.Id;
-                }
+                return model.Id;
             }
             catch (Exception ex)
             {
@@ -42,23 +35,20 @@ namespace EclipseWorksAssessment.Persistence.Repositories
         {
             try
             {
-                using (_db)
+                var project = _db.Projects.FirstOrDefault(x => x.Id == projectId);
+                if (project == null)
                 {
-                    var project = _db.Projects.FirstOrDefault(x => x.Id == projectId);
-                    if (project == null)
-                    {
-                        throw new KeyNotFoundException($"Projeto com o ID {projectId} não encontrado.");
-                    }
-
-                    if (project.Tasks.Any())
-                    {
-                        throw new ProjectHaveTaksException();
-                    }
-
-                    _db.Projects.Remove(project);
-
-                    return await _db.SaveChangesAsync();
+                    throw new KeyNotFoundException($"Projeto com o ID {projectId} não encontrado.");
                 }
+
+                if (project.Tasks.Any())
+                {
+                    throw new ProjectHaveTaksException();
+                }
+
+                _db.Projects.Remove(project);
+
+                return await _db.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -68,21 +58,29 @@ namespace EclipseWorksAssessment.Persistence.Repositories
 
         public async Task<IEnumerable<ProjectEntity>> GetAll(int userId)
         {
-            using (_db)
-            {
-                return await _db.Projects
-                    .Where(x => x.UserId == userId)
-                    .ToListAsync();
-            }
+            return await _db.Projects
+                .Where(x => x.UserId == userId)
+                .ToListAsync();
         }
 
         public async Task<ProjectEntity> GetById(int id)
         {
-            using (_db)
+            try
             {
-                return await _db.Projects
-                    .Include(x => x.Tasks)
-                    .FirstOrDefaultAsync(x => x.Id == id);
+                var project = await _db.Projects
+                       .Include(x => x.Tasks)
+                       .FirstOrDefaultAsync(x => x.Id == id);
+
+                if (project is null)
+                {
+                    throw new KeyNotFoundException($"Projeto com Id {id} não encontrado.");
+                }
+
+                return project;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
             }
         }
     }

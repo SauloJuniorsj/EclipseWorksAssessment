@@ -105,10 +105,6 @@ namespace EclipseWorksAssessment.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Changes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Comment")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -125,11 +121,21 @@ namespace EclipseWorksAssessment.Persistence.Migrations
                     b.Property<int>("HistoryType")
                         .HasColumnType("int");
 
-                    b.Property<string>("ModifiedBy")
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NewState")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OldState")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TaskId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserEntityId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -138,6 +144,8 @@ namespace EclipseWorksAssessment.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("TaskId");
+
+                    b.HasIndex("UserEntityId");
 
                     b.ToTable("UserComments");
                 });
@@ -198,6 +206,10 @@ namespace EclipseWorksAssessment.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("EclipseWorksAssessment.Domain.Entities.UserEntity", null)
+                        .WithMany("UserComments")
+                        .HasForeignKey("UserEntityId");
+
                     b.Navigation("Task");
                 });
 
@@ -213,6 +225,8 @@ namespace EclipseWorksAssessment.Persistence.Migrations
 
             modelBuilder.Entity("EclipseWorksAssessment.Domain.Entities.UserEntity", b =>
                 {
+                    b.Navigation("UserComments");
+
                     b.Navigation("UserProjects");
                 });
 #pragma warning restore 612, 618

@@ -5,7 +5,7 @@ namespace EclipseWorksAssessment.Application.Services.Interfaces
 {
     public interface ITaskService
     {
-        Task<CollectionTasksViewModel> GetAllTasks(string query);
+        Task<CollectionTasksViewModel> GetAllTasks(string query, int projectId);
         Task<TaskViewModel> GetTaskById(int taskId);
         Task<int> CreateTask(CreateTaskInputModel createModel);
         Task<int> CreateComment(CreateCommentInputModel createModel);

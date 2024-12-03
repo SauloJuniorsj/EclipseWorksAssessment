@@ -4,7 +4,7 @@ namespace EclipseWorksAssessment.Domain.Repositories
 {
     public interface ITaskRepository
     {
-        Task<IEnumerable<TaskEntity>> GetAllTasks(string query);
+        Task<IEnumerable<TaskEntity>> GetAllTasks(string query, int projectId);
         Task<TaskEntity> GetTaskById(int taskId);
         Task<int> CreateTask(TaskEntity createModel);
         Task<int> CreateComment(UserCommentEntity createModel);

@@ -4,6 +4,7 @@ namespace EclipseWorksAssessment.Domain.Repositories
 {
     public interface IUserCommentRepository
     {
-        Task<int> AddAsync(UserCommentEntity userComment);
+        Task<int> CreateCommentary(UserCommentEntity userComment);
+        Task<int> SaveTaskHistoryAsync(UserCommentEntity updatedTask);
     }
 }
