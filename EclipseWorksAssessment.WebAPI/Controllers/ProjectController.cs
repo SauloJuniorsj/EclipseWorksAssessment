@@ -49,7 +49,13 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
         {
             var Id = await _projectService.Create(createProject);
 
-            return CreatedAtAction(nameof(GetById), new { id = Id }, createProject);
+            return Ok(Id);
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _projectService.Delete(id);
+            return Ok();
         }
     }
 }

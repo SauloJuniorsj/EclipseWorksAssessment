@@ -8,18 +8,29 @@ namespace EclipseWorksAssessment.Application.ViewModels
         {
             
         }
-        public IEnumerable<TaskViewModel> CollectionProject { get; set; }
+        public List<TaskViewModel> CollectionTask { get; set; }
 
-        public CollectionTasksViewModel(IEnumerable<TaskEntity> collection)
+        public CollectionTasksViewModel(List<TaskEntity> collection)
         {
-            CollectionProject = collection.Select(x => 
-            new TaskViewModel(x.Id,
-            x.Description,
-            x.Title,
-            x.DueDate,
-            x.Status,
-            x.Priority,
-            x.ProjectId));
+            if (collection == null)
+            {
+                CollectionTask = new List<TaskViewModel>();
+                return;
+            }
+
+            CollectionTask = collection.Select(x =>
+                new TaskViewModel(
+                    x.Id,
+                    x.Title,
+                    x.Description,
+                    x.DueDate,
+                    x.Status,
+                    x.Priority,
+                    x.ProjectId,
+                    x.DateCreated,
+                    x.DateDeleted
+                    ))
+                .ToList();
         }
     }
 }

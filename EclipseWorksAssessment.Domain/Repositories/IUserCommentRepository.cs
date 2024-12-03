@@ -6,5 +6,6 @@ namespace EclipseWorksAssessment.Domain.Repositories
     {
         Task<int> CreateCommentary(UserCommentEntity userComment);
         Task<int> SaveTaskHistoryAsync(UserCommentEntity updatedTask);
+        Task<UserCommentEntity> GetById(int id);
     }
 }

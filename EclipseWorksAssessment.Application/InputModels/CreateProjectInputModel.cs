@@ -1,11 +1,12 @@
 ﻿using EclipseWorksAssessment.Domain.Entities;
+using EclipseWorksAssessment.Domain.Enums;
 
 namespace EclipseWorksAssessment.Application.InputModels
 {
     public class CreateProjectInputModel
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public int UserId { get; set; }
+
     }
 }

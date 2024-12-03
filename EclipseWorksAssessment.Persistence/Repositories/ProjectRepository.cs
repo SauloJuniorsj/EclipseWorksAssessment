@@ -35,15 +35,16 @@ namespace EclipseWorksAssessment.Persistence.Repositories
         {
             try
             {
-                var project = _db.Projects.FirstOrDefault(x => x.Id == projectId);
+                var project = await GetById(projectId);
+
                 if (project == null)
                 {
                     throw new KeyNotFoundException($"Projeto com o ID {projectId} não encontrado.");
                 }
 
-                if (project.Tasks.Any())
+                if (project.Tasks.Any(x => x.Status == 0))
                 {
-                    throw new ProjectHaveTaksException();
+                    throw new DomainLogicException(ErrorConstants.ProjectHavePendingTask);
                 }
 
                 _db.Projects.Remove(project);
@@ -56,9 +57,11 @@ namespace EclipseWorksAssessment.Persistence.Repositories
             }
         }
 
-        public async Task<IEnumerable<ProjectEntity>> GetAll(int userId)
+        public async Task<List<ProjectEntity>> GetAll(int userId)
         {
             return await _db.Projects
+                .Include(x => x.Tasks)
+                .Include(x => x.User)
                 .Where(x => x.UserId == userId)
                 .ToListAsync();
         }
@@ -68,8 +71,9 @@ namespace EclipseWorksAssessment.Persistence.Repositories
             try
             {
                 var project = await _db.Projects
-                       .Include(x => x.Tasks)
-                       .FirstOrDefaultAsync(x => x.Id == id);
+                        .Include(x => x.Tasks)
+                        .Include(x => x.User)
+                        .FirstOrDefaultAsync(x => x.Id == id);
 
                 if (project is null)
                 {

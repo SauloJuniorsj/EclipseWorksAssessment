@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EclipseWorksAssessment.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241202135203_First_migration")]
+    [Migration("20241203214147_First_migration")]
     partial class First_migration
     {
         /// <inheritdoc />
@@ -74,7 +74,6 @@ namespace EclipseWorksAssessment.Persistence.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("DueDate")
@@ -109,7 +108,6 @@ namespace EclipseWorksAssessment.Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("DateCreated")
@@ -128,11 +126,9 @@ namespace EclipseWorksAssessment.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NewState")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OldState")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TaskId")
@@ -173,6 +169,9 @@ namespace EclipseWorksAssessment.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserHierarchy")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

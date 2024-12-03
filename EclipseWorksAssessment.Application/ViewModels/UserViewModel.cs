@@ -6,7 +6,7 @@
         {
             
         }
-        public UserViewModel(int id, string name, List<ProjectViewModel> projects)
+        public UserViewModel(int id, string name, CollectionProjectViewModel projects)
         {
             Id = id;
             Name = name;
@@ -15,6 +15,6 @@
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<ProjectViewModel> Projects { get; set; }
+        public CollectionProjectViewModel Projects { get; set; }
     }
 }

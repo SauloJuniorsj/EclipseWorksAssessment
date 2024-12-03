@@ -1,4 +1,6 @@
-﻿namespace EclipseWorksAssessment.Domain.Entities
+﻿using EclipseWorksAssessment.Domain.Enums;
+
+namespace EclipseWorksAssessment.Domain.Entities
 {
     public class ProjectEntity : BaseEntity
     {
@@ -11,6 +13,7 @@
 
         public string Name { get; set; }
         public int UserId { get; set; }
+
         public virtual UserEntity User { get; set; }
         public virtual List<TaskEntity> Tasks { get; set; }
     }

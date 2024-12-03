@@ -6,13 +6,15 @@ namespace EclipseWorksAssessment.Application.ViewModels
     {
         public CollectionProjectViewModel()
         {
-            
+            CollectionProject = new List<ProjectViewModel>();
         }
-        public IEnumerable<ProjectViewModel> CollectionProject { get; set; }
+        public List<ProjectViewModel> CollectionProject { get; set; }
 
-        public CollectionProjectViewModel(IEnumerable<ProjectEntity> collection)
+        public CollectionProjectViewModel(List<ProjectEntity> collection)
         {
-            CollectionProject = collection.Select(x => new ProjectViewModel(x));
+            CollectionProject = new List<ProjectViewModel>();
+
+            CollectionProject = collection.Select(x => new ProjectViewModel(x)).ToList();
         }
     }
 }

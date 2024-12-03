@@ -9,7 +9,5 @@ namespace EclipseWorksAssessment.Application.InputModels
         public string Description { get; set; }
         public DateTimeOffset DueDate { get; set; }
         public ETaskStatus Status { get; set; }
-        public int ProjectId { get; set; }
-        public int UserId { get; set; }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using EclipseWorksAssessment.Domain.Enums;
+using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace EclipseWorksAssessment.Application.InputModels
 {

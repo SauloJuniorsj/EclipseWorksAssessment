@@ -3,6 +3,8 @@ using EclipseWorksAssessment.Application.Services.Interfaces;
 using EclipseWorksAssessment.Application.ViewModels;
 using EclipseWorksAssessment.Domain.Entities;
 using EclipseWorksAssessment.Domain.Repositories;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace EclipseWorksAssessment.Application.Services.Implementations
 {
@@ -10,11 +12,13 @@ namespace EclipseWorksAssessment.Application.Services.Implementations
     {
         private readonly ITaskRepository _taskRepository;
         private readonly IUserCommentRepository _userComment;
+        private readonly IProjectRepository _projectRepository;
 
-        public TaskService(ITaskRepository taskRepository, IUserCommentRepository userComment)
+        public TaskService(ITaskRepository taskRepository, IUserCommentRepository userComment, IProjectRepository projectRepository)
         {
             _taskRepository = taskRepository;
             _userComment = userComment;
+            _projectRepository = projectRepository;
         }
 
         public async Task<int> CreateTask(CreateTaskInputModel createModel)
@@ -42,7 +46,7 @@ namespace EclipseWorksAssessment.Application.Services.Implementations
                 createModel.Comment
                 );
 
-            await _taskRepository.CreateComment(comment);
+            await _userComment.CreateCommentary(comment);
 
             return comment.Id;
         }
@@ -59,42 +63,51 @@ namespace EclipseWorksAssessment.Application.Services.Implementations
             return taskViewModels;
         }
 
-        public async Task<TaskViewModel> GetTaskById(int taskId)
+        public async Task<TaskViewModel> GetTaskById(int taskId, bool asNoTracking = false)
         {
-            var task = await _taskRepository.GetTaskById(taskId);
+            var task = await _taskRepository.GetTaskById(taskId, asNoTracking);
 
             if (task == null) return null;
 
-            return new TaskViewModel(task.Id, task.Title, task.Description, task.DueDate, task.Status, task.Priority, task.ProjectId);
+            return new TaskViewModel(task.Id, task.Title, task.Description, task.DueDate, task.Status, task.Priority, task.ProjectId, task.DateCreated, task.DateDeleted);
         }
 
         public async Task<int> Update(UpdateTaskInputModel updateModel)
         {
+            var oldModel = await GetTaskById(updateModel.Id, true);
+
             TaskEntity newTask = new TaskEntity(
                 updateModel.Id,
                 updateModel.Title,
                 updateModel.Description,
                 updateModel.DueDate,
                 updateModel.Status,
-                updateModel.ProjectId
+                oldModel.Priority,
+                oldModel.ProjectId,
+                oldModel.DateCreated,
+                oldModel.DateDeleted
                 );
 
-            var oldModel = GetTaskById(updateModel.Id);
+            await CreateComment(updateModel.Id, oldModel, updateModel, oldModel.ProjectId);
+
+            return await _taskRepository.Update(newTask);
+        }
+
+        public async Task<int> CreateComment(int taskId, TaskViewModel oldModel, UpdateTaskInputModel updateModel, int projectId)
+        {
+            var project = await _projectRepository.GetById(projectId);
 
             UserCommentEntity userCommentEntity = new UserCommentEntity(
                 Domain.Enums.EHistoryType.Update,
-                newTask.Id,
-                updateModel.UserId,
-                string.Empty,
-                string.Empty,
-                //JsonConvert.SerializeObject(oldModel),
-                //JsonConvert.SerializeObject(newTask),
-                DateTime.UtcNow
+                taskId,
+                project.UserId,
+                JsonConvert.SerializeObject(oldModel),
+                JsonConvert.SerializeObject(updateModel),
+                DateTime.UtcNow,
+                string.Empty
                 );
 
-            await _userComment.SaveTaskHistoryAsync(userCommentEntity);
-
-            return await _taskRepository.Update(newTask);
+            return await _userComment.SaveTaskHistoryAsync(userCommentEntity);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using EclipseWorksAssessment.Domain.Entities;
 using EclipseWorksAssessment.Domain.Repositories;
 using EclipseWorksAssessment.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace EclipseWorksAssessment.Persistence.Repositories
 {
@@ -16,6 +17,7 @@ namespace EclipseWorksAssessment.Persistence.Repositories
             try
             {
                 _db.UserComments.Add(userComment);
+                userComment.DateCreated = DateTime.Now;
 
                 return await _db.SaveChangesAsync();
 
@@ -25,7 +27,26 @@ namespace EclipseWorksAssessment.Persistence.Repositories
                 throw new InvalidOperationException("Erro ao criar comentário", ex);
             }
         }
+        public async Task<UserCommentEntity> GetById(int id)
+        {
+            try
+            {
+                var task = await _db.UserComments
+                .Include(x => x.Task)
+                .FirstOrDefaultAsync(x => x.Id == id);
 
+                if (task is null)
+                {
+                    throw new KeyNotFoundException($"Comentário(s) com Id {id} não encontrado.");
+                }
+
+                return task;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
         public async Task<int> SaveTaskHistoryAsync(UserCommentEntity updatedTask)
         {
             try

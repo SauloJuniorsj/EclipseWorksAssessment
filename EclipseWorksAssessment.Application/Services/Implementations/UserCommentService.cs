@@ -1,7 +1,10 @@
 ﻿using EclipseWorksAssessment.Application.InputModels;
 using EclipseWorksAssessment.Application.Services.Interfaces;
 using EclipseWorksAssessment.Domain.Entities;
+using EclipseWorksAssessment.Domain.Enums;
+using EclipseWorksAssessment.Domain.Exceptions;
 using EclipseWorksAssessment.Domain.Repositories;
+using Newtonsoft.Json;
 
 namespace EclipseWorksAssessment.Application.Services.Implementations
 {
@@ -9,14 +12,24 @@ namespace EclipseWorksAssessment.Application.Services.Implementations
     {
         private readonly IUserCommentRepository _userCommentRepository;
         private readonly ITaskRepository _taskRepository;
-        public UserCommentService(IUserCommentRepository userCommentRepository, ITaskRepository taskRepository)
+        private readonly IUserRepository _userRepository;
+
+        public UserCommentService(IUserCommentRepository userCommentRepository, ITaskRepository taskRepository, IUserRepository userRepository)
         {
             _userCommentRepository = userCommentRepository;
             _taskRepository = taskRepository;
+            _userRepository = userRepository;
         }
 
-        public async Task<int> CreateCommentary(CreateCommentInputModel createModel)
+        public async Task<int> CreateCommentary(CreateUserCommentInputModel createModel)
         {
+            var user = await _userRepository.GetById(createModel.UserId);
+
+            if (!user.UserHierarchy.Equals(EUserHierarchy.Manager))
+            {
+                throw new DomainLogicException(ErrorConstants.UserNotManagerTryDeleteProject);
+            }
+
             UserCommentEntity comment = new UserCommentEntity(
                 createModel.HistoryType,
                 createModel.TaskId,
@@ -34,11 +47,10 @@ namespace EclipseWorksAssessment.Application.Services.Implementations
                 updatedTask.HistoryType,
                 oldTask.Id,
                 updatedTask.UserId,
-                string.Empty,
-                string.Empty,
-                //JsonConvert.SerializeObject(oldTask),
-                //JsonConvert.SerializeObject(updatedTask),
-                DateTime.UtcNow
+                JsonConvert.SerializeObject(oldTask),
+                JsonConvert.SerializeObject(updatedTask),
+                DateTime.UtcNow,
+                updatedTask.Comment
             );
 
            return await _userCommentRepository.SaveTaskHistoryAsync(history);

@@ -20,6 +20,7 @@ namespace EclipseWorksAssessment.Application
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<IUserCommentRepository, UserCommentRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         public static void ConfigureService(this IServiceCollection services, IConfiguration configuration)
@@ -27,7 +28,6 @@ namespace EclipseWorksAssessment.Application
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<ITaskService, TaskService>();
             services.AddScoped<IUserCommentService, UserCommentService>();
-
         }
         public static void MigrationInitializer(this IApplicationBuilder serviceProvider)
         {

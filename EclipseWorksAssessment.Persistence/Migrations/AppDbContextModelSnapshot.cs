@@ -71,7 +71,6 @@ namespace EclipseWorksAssessment.Persistence.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("DueDate")
@@ -106,7 +105,6 @@ namespace EclipseWorksAssessment.Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("DateCreated")
@@ -125,11 +123,9 @@ namespace EclipseWorksAssessment.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NewState")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OldState")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TaskId")
@@ -170,6 +166,9 @@ namespace EclipseWorksAssessment.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserHierarchy")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

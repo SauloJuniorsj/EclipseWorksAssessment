@@ -1,5 +1,4 @@
 ﻿using EclipseWorksAssessment.Application.InputModels;
-using EclipseWorksAssessment.Application.Services.Implementations;
 using EclipseWorksAssessment.Application.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,10 +9,12 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
     public class TaskController : ControllerBase
     {
         private readonly ITaskService _taskService;
+        private readonly IProjectService _projectService;
 
-        public TaskController(ITaskService taskService)
+        public TaskController(ITaskService taskService, IProjectService projectService)
         {
             _taskService = taskService;
+            _projectService = projectService;
         }
         /// <summary>
         ///  Vizualiza todas as tarefas de um projeto específico
@@ -36,15 +37,21 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
         {
             var Id = await _taskService.CreateTask(task);
 
-            return CreatedAtAction(nameof(Get), new { id = Id }, task);
+            return Ok(Id);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, [FromBody] UpdateTaskInputModel task)
+        [HttpPut]
+        public async Task<ActionResult> Update([FromBody] UpdateTaskInputModel task)
         {
             var result = await _taskService.Update(task);
 
             return Ok(result);
+        }
+        [HttpDelete]
+        public async Task<ActionResult> Delete(int taskId)
+        {
+            await _taskService.Delete(taskId);
+            return Ok();
         }
     }
 }

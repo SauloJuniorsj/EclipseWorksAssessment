@@ -1,0 +1,1 @@
+Sugestão: Implementar autenticação e autorização para poder implementar sistemas de hierarquia mais conciso, assim limitando certas ações para certos tipos de nível hierarquicos de usuários.

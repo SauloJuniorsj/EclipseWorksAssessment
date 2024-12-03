@@ -15,33 +15,19 @@ namespace EclipseWorksAssessment.Persistence.Repositories
             _db = context;
         }
 
-        public async Task<int> CreateComment(UserCommentEntity createModel)
-        {
-            try
-            {
-                _db.UserComments.Add(createModel);
-
-                await _db.SaveChangesAsync();
-
-                return createModel.Id;
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException("Erro ao criar Comentário", ex);
-            }
-        }
-
         public async Task<int> CreateTask(TaskEntity createModel)
         {
-            var project = _db.Projects.FirstOrDefault(x => x.Id == createModel.ProjectId);
+            var project = await _db.Projects
+                .Include(x => x.Tasks)
+                .FirstOrDefaultAsync(x => x.Id == createModel.ProjectId);
 
             if (project == null)
             {
-                throw new KeyNotFoundException($"Projeto com o ID {createModel.ProjectId} não encontrado.");
+                throw new KeyNotFoundException($"Tarefa com o ID {createModel.ProjectId} não encontrado.");
             }
             if (project.Tasks.Count >= 20)
             {
-                throw new TaskLimitExcededException();
+                throw new DomainLogicException(ErrorConstants.TaskLimitExceeded);
             }
 
             try
@@ -62,7 +48,7 @@ namespace EclipseWorksAssessment.Persistence.Repositories
         {
             try
             {
-                var task = _db.Tasks.FirstOrDefault(x => x.Id == taskId);
+                var task = await _db.Tasks.FirstOrDefaultAsync(x => x.Id == taskId);
                 if (task == null)
                 {
                     throw new KeyNotFoundException($"Task com o ID {taskId} não encontrado.");
@@ -78,21 +64,29 @@ namespace EclipseWorksAssessment.Persistence.Repositories
             }
         }
 
-        public async Task<IEnumerable<TaskEntity>> GetAllTasks(string query, int projectId)
+        public async Task<List<TaskEntity>> GetAllTasks(string query, int projectId)
         {
             return await _db.Tasks
                     .Include(x => x.UserComments)
+                    .Include(x => x.Project)
                     .Where(x => x.ProjectId == projectId)
                     .ToListAsync();
         }
 
-        public async Task<TaskEntity> GetTaskById(int taskId)
+        public async Task<TaskEntity> GetTaskById(int taskId, bool asNoTracking)
         {
             try
             {
-                var task = await _db.Tasks
+                var query = _db.Tasks
                 .Include(x => x.UserComments)
-                .FirstOrDefaultAsync(x => x.Id == taskId);
+                .Include(x => x.Project)
+                .AsQueryable();
+
+                if (asNoTracking)
+                {
+                    query = query.AsNoTracking();
+                }
+                var task = await query.FirstOrDefaultAsync(x => x.Id == taskId);
 
                 if (task is null)
                 {
@@ -103,22 +97,19 @@ namespace EclipseWorksAssessment.Persistence.Repositories
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.Message, ex);
             }
         }
 
         public async Task<int> Update(TaskEntity entity)
         {
-            var task = _db.Tasks.FirstOrDefault(x => x.Id == entity.Id);
-
-            if (task == null)
-            {
-                throw new KeyNotFoundException($"Tarefa com o ID {entity.Id} não encontrado.");
-            }
-
             try
             {
+                var trackedEntity = _db.Tasks.Local.FirstOrDefault(x => x.Id == entity.Id);
+                if (trackedEntity != null)
+                {
+                    _db.Entry(trackedEntity).State = EntityState.Detached;
+                }
                 _db.Tasks.Update(entity);
 
                 return await _db.SaveChangesAsync();

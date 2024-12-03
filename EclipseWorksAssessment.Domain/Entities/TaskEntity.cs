@@ -20,21 +20,24 @@ namespace EclipseWorksAssessment.Domain.Entities
             DateCreated = DateTime.UtcNow;
             UserComments = new List<UserCommentEntity>();
         }
-        public TaskEntity(int id, string title, string description, DateTimeOffset dueDate, ETaskStatus status, int projectId)
+        public TaskEntity(int id, string title, string description, DateTimeOffset dueDate, ETaskStatus status, ETaskPriority priority, int projectId, DateTimeOffset dateCreated, DateTimeOffset dateDelete)
         {
             Id = id;
             Title = title;
             Description = description;
             DueDate = dueDate;
             Status = status;
+            Priority = priority;
             ProjectId = projectId;
+            DateCreated = dateCreated;
+            DateDeleted = dateDelete;
 
             DateUpdated = DateTime.UtcNow;
             UserComments = new List<UserCommentEntity>();
         }
 
         public string Title { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public DateTimeOffset DueDate { get; set; }
         public ETaskStatus Status { get; set; }
         public ETaskPriority Priority { get; set; }
