@@ -16,6 +16,7 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
             _taskService = taskService;
             _projectService = projectService;
         }
+
         /// <summary>
         ///  Vizualiza todas as tarefas de um projeto específico
         /// </summary>
@@ -32,6 +33,11 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
             return Ok(task);
         }
 
+        /// <summary>
+        /// Cria uma nova tarefa Status :"0 - Pendente" "1 - Em Andamento" "2 - Concluída" Prioridade : "0 - Baixa" "1 - Média" "2 - Alta"
+        /// </summary>
+        /// <param name="task"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] CreateTaskInputModel task)
         {
@@ -40,6 +46,11 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
             return Ok(Id);
         }
 
+        /// <summary>
+        /// Atualiza uma tarefa Status :"0 - Pendente" "1 - Em Andamento" "2 - Concluída" Prioridade : "0 - Baixa" "1 - Média" "2 - Alta"
+        /// </summary>
+        /// <param name="task"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<ActionResult> Update([FromBody] UpdateTaskInputModel task)
         {
@@ -47,6 +58,12 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
 
             return Ok(result);
         }
+
+        /// <summary>
+        /// Deleta uma tarefa
+        /// </summary>
+        /// <param name="taskId"></param>
+        /// <returns></returns>
         [HttpDelete]
         public async Task<ActionResult> Delete(int taskId)
         {

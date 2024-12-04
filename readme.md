@@ -19,7 +19,7 @@ Execute o seguinte comando para construir e iniciar os contêineres:
 
 Após a inicialização, a aplicação estará disponível em um navegador. Você pode acessá-la através do seguinte endereço:
 
-	http://localhost:8080
+	http://localhost:8080/swagger/index.html
 
 Nota: A porta 8080 pode ser alterada no arquivo docker-compose.yml, então, se você fizer alterações, ajuste a URL conforme necessário.
 

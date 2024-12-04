@@ -1,5 +1,7 @@
 ﻿using EclipseWorksAssessment.Application.Services.Interfaces;
 using EclipseWorksAssessment.Application.ViewModels;
+using EclipseWorksAssessment.Domain.Enums;
+using EclipseWorksAssessment.Domain.Exceptions;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Authorization;
@@ -14,15 +16,29 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
     public class RelatoriesController : ControllerBase
     {
         private readonly IRelatoriesService _relat;
-        
-        public RelatoriesController(IRelatoriesService reportService)
+        private readonly IUserService _userService;
+        public RelatoriesController(IRelatoriesService reportService, IUserService userService)
         {
             _relat = reportService;
+            _userService = userService;
         }
-
-        [HttpGet("performance")]
-        public async Task<IActionResult> GetUserPerformanceReport([FromQuery] string format = "json")
+        /// <summary>
+        /// Gera um relatório de desempenho de tarefas, possui tipo 'json', 'excel' e 'pdf'
+        /// </summary>
+        /// <param name="userId">Serve para verificar se o usario logado e um manager</param>
+        /// <param name="format">Formato do relatório</param>
+        /// <returns></returns>
+        /// <exception cref="DomainLogicException"></exception>
+        [HttpGet("performance/{userId}")]
+        public async Task<IActionResult> GetUserPerformanceReport(int userId, [FromQuery] string format = "json")
         {
+            var user = await _userService.GetById(userId);
+
+            if (!user.Role.Equals(EUserHierarchy.Manager))
+            {
+                throw new DomainLogicException(ErrorConstants.UserNotManagerTryDeleteProject);
+            }
+
             var reportData = await _relat.GenerateUserTaskPerformanceReport();
 
             return format.ToLower() switch

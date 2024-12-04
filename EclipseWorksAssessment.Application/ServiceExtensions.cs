@@ -30,6 +30,7 @@ namespace EclipseWorksAssessment.Application
             services.AddScoped<ITaskService, TaskService>();
             services.AddScoped<IUserCommentService, UserCommentService>();
             services.AddScoped<IRelatoriesService, RelatoriesService>();
+            services.AddScoped<IUserService, UserService>();
         }
         public static void MigrationInitializer(this IApplicationBuilder serviceProvider)
         {

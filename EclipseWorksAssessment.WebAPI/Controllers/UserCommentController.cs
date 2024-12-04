@@ -15,6 +15,11 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
             _userCommentService = userCommentService;
         }
 
+        /// <summary>
+        /// Cria um comentário "0 - Atualização" "1- Comentário"
+        /// </summary>
+        /// <param name="comment"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] CreateUserCommentInputModel comment)
         {

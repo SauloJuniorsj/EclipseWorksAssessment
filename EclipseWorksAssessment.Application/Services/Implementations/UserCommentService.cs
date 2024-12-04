@@ -23,13 +23,6 @@ namespace EclipseWorksAssessment.Application.Services.Implementations
 
         public async Task<int> CreateCommentary(CreateUserCommentInputModel createModel)
         {
-            var user = await _userRepository.GetById(createModel.UserId);
-
-            if (!user.UserHierarchy.Equals(EUserHierarchy.Manager))
-            {
-                throw new DomainLogicException(ErrorConstants.UserNotManagerTryDeleteProject);
-            }
-
             UserCommentEntity comment = new UserCommentEntity(
                 createModel.HistoryType,
                 createModel.TaskId,

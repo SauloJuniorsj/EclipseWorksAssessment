@@ -2,6 +2,8 @@ using EclipseWorksAssessment.Application;
 using EclipseWorksAssessment.Persistence.Context;
 using EclipseWorksAssessment.WebAPI;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Seu Projeto", Version = "v1" });
+
+    // Adicione esta linha para incluir a documentação XML
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
 });
 builder.Services.ConfigurePersistence(builder.Configuration);
 builder.Services.ConfigureService(builder.Configuration);

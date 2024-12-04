@@ -15,8 +15,12 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
             _projectService = projectService;
         }
 
+        /// <summary>
+        /// Retorna todas as tarefas de um projeto especifico
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         [HttpGet("GetAll/{userId}")]
-
         public async Task<ActionResult> GetAll(int userId)
         {
             var projects = await _projectService.GetAll(userId);
@@ -24,7 +28,7 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Retrieves a project by its unique identifier.
+        /// Retorna uma tarefa de um projeto especifico
         /// </summary>
         /// <param name="id">The unique identifier of the project to retrieve.</param>
         /// <returns>An IActionResult containing the retrieved project, or a 404 result if the project is not found.</returns>
@@ -40,7 +44,7 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
         }
 
         /// <summary>
-        /// Creates a new project based on the provided input model.
+        /// Cria um novo projeto
         /// </summary>
         /// <param name="createProject">The input model containing the project details.</param>
         /// <returns>An IActionResult indicating the result of the creation operation.</returns>
@@ -51,6 +55,11 @@ namespace EclipseWorksAssessment.WebAPI.Controllers
 
             return Ok(Id);
         }
+        /// <summary>
+        /// Deleta um projeto
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
